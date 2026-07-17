@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundial 2026 - Analizador & Predictor Estadístico</title>
+    <meta name="description" content="Plataforma interactiva para el análisis de estadísticas y predicción de resultados del Mundial para España, Argentina, Francia e Inglaterra.">
+    <link rel="stylesheet" href="style.css">
+    <!-- Cargar Chart.js para visualización de estadísticas -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- Cabecera y Navegación -->
+    <header>
+        <div class="header-container">
+            <a href="#inicio" class="logo">
+                <span class="logo-icon">⚽</span>
+                <span class="logo-text">MUNDIAL PREDICTIVE</span>
+            </a>
+            <nav>
+                <a href="#inicio" class="active">Inicio</a>
+                <a href="#selecciones">Selecciones</a>
+                <a href="#analisis">Análisis Estadístico</a>
+                <a href="#predicciones">Predicciones</a>
+                <a href="#agregar">Agregar Datos</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main>
+
+        <!-- SECCIÓN: INICIO (HOME) -->
+        <section id="inicio" class="active">
+            <div class="hero">
+                <h1>Analizador y Predictor del Mundial 2026</h1>
+                <p>Monitorea estadísticas clave, compara selecciones en tiempo real y simula resultados basados en un modelo predictivo avanzado de goles esperados (xG).</p>
+                <div class="hero-actions">
+                    <a href="#predicciones" class="btn btn-primary nav-btn">Ver Predicciones</a>
+                    <a href="#agregar" class="btn btn-secondary nav-btn">Cargar Datos</a>
+                </div>
+            </div>
+
+            <h2 class="section-title" style="margin-bottom: 1.5rem; text-align: center;">Base de Datos: Selecciones Favoritas</h2>
+            <div id="home-teams-grid" class="teams-grid">
+                <!-- Tarjetas dinámicas de app.js -->
+            </div>
+        </section>
+
+        <!-- SECCIÓN: DETALLE DE SELECCIONES -->
+        <section id="selecciones">
+            <div class="hero" style="padding: 1.5rem 0;">
+                <h1>Detalles de Rendimiento de Plantillas</h1>
+                <p>Revisa en detalle el rendimiento global, historial de los últimos 5 partidos y jugadores clave de cada selección en esta Copa del Mundo.</p>
+            </div>
+
+            <div id="detailed-teams-container" class="detailed-teams-grid">
+                <!-- Paneles detallados de app.js -->
+            </div>
+        </section>
+
+        <!-- SECCIÓN: ANÁLISIS ESTADÍSTICO -->
+        <section id="analisis">
+            <div class="hero" style="padding: 1.5rem 0;">
+                <h1>Comparador Estadístico</h1>
+                <p>Selecciona dos selecciones nacionales para cruzar sus métricas clave e identificar fortalezas y debilidades tácticas.</p>
+            </div>
+
+            <div class="analysis-selectors glassmorphic">
+                <div class="select-wrapper">
+                    <select id="compare-team-a" class="custom-select">
+                        <!-- Opciones dinámicas -->
+                    </select>
+                </div>
+                <div class="vs-divider">VS</div>
+                <div class="select-wrapper">
+                    <select id="compare-team-b" class="custom-select">
+                        <!-- Opciones dinámicas -->
+                    </select>
+                </div>
+            </div>
+
+            <div class="comparison-dashboard">
+                <!-- Tabla Comparativa -->
+                <div class="comparison-table-panel glassmorphic">
+                    <table class="table-comparison">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">Métrica</th>
+                                <th id="compare-name-a">Equipo A</th>
+                                <th id="compare-name-b">Equipo B</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: left;" class="stat-name">Goles Anotados</td>
+                                <td id="stat-compare-goals-a" class="compare-val">0</td>
+                                <td id="stat-compare-goals-b" class="compare-val">0</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;" class="stat-name">Goles Recibidos</td>
+                                <td id="stat-compare-conceded-a" class="compare-val">0</td>
+                                <td id="stat-compare-conceded-b" class="compare-val">0</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;" class="stat-name">Posesión Promedio</td>
+                                <td id="stat-compare-poss-a" class="compare-val">0%</td>
+                                <td id="stat-compare-poss-b" class="compare-val">0%</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;" class="stat-name">Tiros a Portería</td>
+                                <td id="stat-compare-shots-a" class="compare-val">0</td>
+                                <td id="stat-compare-shots-b" class="compare-val">0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="display: flex; justify-content: space-around; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <div id="compare-flag-a" style="width: 50px; height: 30px; border-radius: 4px; overflow: hidden; margin-bottom: 0.5rem;"></div>
+                            <span>Local</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <div id="compare-flag-b" style="width: 50px; height: 30px; border-radius: 4px; overflow: hidden; margin-bottom: 0.5rem;"></div>
+                            <span>Visitante</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráfico Chart.js -->
+                <div class="chart-panel glassmorphic">
+                    <canvas id="comparisonChart" style="width: 100%; height: 100%; max-height: 300px;"></canvas>
+                    <div id="chart-fallback" style="display: none;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: PREDICCIONES -->
+        <section id="predicciones">
+            <div class="hero" style="padding: 1.5rem 0;">
+                <h1>Predicciones Oficiales del Mundial</h1>
+                <p>Nuestro modelo calcula las probabilidades, goles estimados y ganadores para la definición del torneo basándose en el historial y nivel actual.</p>
+            </div>
+
+            <div class="predictions-layout">
+                <h2 style="text-align: center; margin-bottom: -0.5rem; font-weight: 700; font-size: 1.8rem;">Cierre de la Copa del Mundo</h2>
+                <div id="world-cup-finals-predictions" class="predictions-container">
+                    <!-- Tarjetas de Final y Tercer Lugar dinámicas de app.js -->
+                </div>
+
+                <!-- Simulador Personalizado -->
+                <div class="custom-simulator-box glassmorphic">
+                    <h2 style="text-align: center; margin-bottom: 0.5rem;">Simulador de Enfrentamientos Personalizado</h2>
+                    <p style="text-align: center; color: var(--text-secondary); max-width: 600px; margin: 0 auto 1.5rem;">Prueba cruces directos entre cualquier selección para proyectar goles estimados, ganadores y justificación estadística.</p>
+                    
+                    <div class="simulator-controls">
+                        <div class="select-wrapper" style="max-width: 250px;">
+                            <select id="predict-team-a" class="custom-select">
+                                <!-- Opciones -->
+                            </select>
+                        </div>
+                        <span style="font-family: 'Outfit'; font-weight: 800; font-size: 1.3rem;">VS</span>
+                        <div class="select-wrapper" style="max-width: 250px;">
+                            <select id="predict-team-b" class="custom-select">
+                                <!-- Opciones -->
+                            </select>
+                        </div>
+                        <button id="run-custom-prediction" class="btn btn-primary">Simular Partido</button>
+                    </div>
+
+                    <div id="custom-prediction-results" style="margin-top: 2rem; display: none;">
+                        <!-- Resultados dinámicos -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: AGREGAR DATOS -->
+        <section id="agregar">
+            <div class="hero" style="padding: 1.5rem 0;">
+                <h1>Centro de Carga Deportiva</h1>
+                <p>Mantén actualizada la base de datos subiendo nuevos reportes estadísticos, escaneando enlaces de noticias o ingresando métricas manualmente.</p>
+            </div>
+
+            <!-- Alerta para mensajes -->
+            <div id="status-message-box" class="status-box"></div>
+
+            <div class="add-data-layout">
+                <!-- Carga de Archivos y Enlaces -->
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <!-- Zona Drag & Drop -->
+                    <div class="glassmorphic">
+                        <h3 style="margin-bottom: 1rem;">Cargar Reporte (Excel, CSV, PDF, Imagen)</h3>
+                        <div id="file-drop-zone" class="drop-zone">
+                            <span class="drop-zone-icon">📁</span>
+                            <p>Arrastra tu archivo aquí o haz clic para seleccionarlo</p>
+                            <p class="drop-zone-subtitle">Archivos CSV modifican datos reales. PDF, Excel e imágenes corren simulación de escaneo.</p>
+                            <input type="file" id="file-upload-input" style="display: none;" accept=".csv,.xlsx,.xls,.pdf,.doc,.docx,.png,.jpg,.jpeg,.webp">
+                        </div>
+                    </div>
+
+                    <!-- Scraping de URLs -->
+                    <div class="glassmorphic">
+                        <h3 style="margin-bottom: 1rem;">Importar desde Enlace Web</h3>
+                        <form id="url-import-form">
+                            <div class="form-group">
+                                <label for="url-team-select">Selección Relacionada</label>
+                                <select id="url-team-select" class="custom-select" style="font-size: 0.95rem; padding: 0.75rem 1rem;" required>
+                                    <!-- Opciones -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="inp-url">Dirección URL del Reporte</label>
+                                <input type="url" id="inp-url" class="form-input" placeholder="https://marca.com/cronica-partido" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Procesar Enlace</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Formulario Captura Manual -->
+                <div class="glassmorphic">
+                    <h3 style="margin-bottom: 1.5rem;">Captura Manual de Estadísticas</h3>
+                    <form id="manual-capture-form">
+                        <div class="form-group">
+                            <label for="edit-team-select">Selección a Editar</label>
+                            <select id="edit-team-select" class="custom-select" style="font-size: 0.95rem; padding: 0.75rem 1rem;" required>
+                                <!-- Opciones dinámicas -->
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="inp-matches">Partidos Disputados</label>
+                                <input type="number" id="inp-matches" class="form-input" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="inp-possession">Posesión Promedio (%)</label>
+                                <input type="number" id="inp-possession" class="form-input" min="0" max="100" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="inp-goals-scored">Goles Anotados</label>
+                                <input type="number" id="inp-goals-scored" class="form-input" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="inp-goals-conceded">Goles Recibidos</label>
+                                <input type="number" id="inp-goals-conceded" class="form-input" min="0" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="inp-shots">Tiros a Portería</label>
+                                <input type="number" id="inp-shots" class="form-input" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="inp-form">Rendimiento (Últimos 5, ej: W,W,D,L,W)</label>
+                                <input type="text" id="inp-form" class="form-input" placeholder="W,D,W,L,W" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inp-players">Jugadores Destacados (Separados por comas)</label>
+                            <input type="text" id="inp-players" class="form-input" placeholder="Jugador 1, Jugador 2" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Guardar y Actualizar</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Overlay de Escaneo Táctico -->
+    <div id="file-scanner-overlay" class="file-scanner-overlay">
+        <div class="scanner-content">
+            <div class="scanner-radar"></div>
+            <div class="scanner-text">Analizando archivo...</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Mundial predictive Dashboard. Diseñado con Google Antigravity.</p>
+    </footer>
+
+    <!-- Lógica de control -->
+    <script src="app.js"></script>
+</body>
+</html>
